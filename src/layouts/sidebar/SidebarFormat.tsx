@@ -24,12 +24,19 @@ export default function SidebarFormat({
   const applyTheme = (mode: "light" | "dark" | "sepia") => {
     const newConfig = { ...config };
     if (mode === "dark") {
-      newConfig.backgroundColor = "#1f2125";
-      newConfig.textColor = "#e7e9ea";
-      newConfig.highlightColor = "#2ca4ab";
-      newConfig.verseNumberColor = "#ffffff";
-      newConfig.surahHeaderColor = "#e7e9ea";
-      newConfig.bismillahColor = "#e7e9ea";
+      // Matches the best default styling (App.tsx, 2026-11-02): deep
+      // green solid background, pure white ayah, soft gold accents,
+      // bright translation in Normal mode — so picking Dark never
+      // reverts the video to the old muted look.
+      newConfig.backgroundColor = "#0b1d17";
+      newConfig.backgroundType = "color";
+      newConfig.textColor = "#ffffff";
+      newConfig.highlightColor = "#facc15";
+      newConfig.verseNumberColor = "#e6c87a";
+      newConfig.surahHeaderColor = "#e6c87a";
+      newConfig.bismillahColor = "#e6c87a";
+      newConfig.translationColor = "#e5e7eb";
+      newConfig.translationHighlightMode = "none";
       newConfig.fontPalette = "--Dark";
     } else if (mode === "sepia") {
       newConfig.backgroundColor = "#f8ebd5";
