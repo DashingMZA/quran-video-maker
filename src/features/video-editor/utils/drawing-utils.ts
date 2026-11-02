@@ -86,10 +86,10 @@ export const getWordFont = (
   config: VideoConfig,
 ) => {
   // IndoPak Unicode text cannot be drawn with the QPC page fonts (they
-  // only contain QPC glyphs). Use a system Arabic font stack instead;
-  // no IndoPak font is bundled with the app.
+  // only contain QPC glyphs). Use the bundled IndoPak font, with a
+  // system Arabic stack only as a fallback.
   if (config.quranTextScript === "indopak") {
-    return `normal ${config.fontSize}px "Amiri", "Traditional Arabic", "Noto Naskh Arabic", serif`;
+    return `normal ${config.fontSize}px "IndoPakNastaleeq", "Amiri", "Traditional Arabic", serif`;
   }
   if (fontType === "qadr")
     return `normal ${config.fontSize}px "${AL_QADR_FONT.family}"`;

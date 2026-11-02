@@ -40,6 +40,21 @@
     font-display: swap;
   }
 
+  /* Bundled IndoPak font (Quran Foundation's indopak-nastaleeq-waqf-lazim
+   * v4.2.1, served from verses.quran.foundation). Used for the IndoPak
+   * text script (text_indopak) — the QPC page fonts only contain Uthmani
+   * glyphs, and system fonts do not render IndoPak waqf signs correctly.
+   * Also loaded explicitly via FontFace in useFontLoader so the canvas
+   * waits for it before drawing. Credit: see the About dialog. */
+  @font-face {
+    font-family: "IndoPakNastaleeq";
+    src: url("/fonts/indopak-nastaleeq-waqf-lazim-v4.2.1.woff2")
+      format("woff2");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+
   .font-lateef {
     font-family: "LateefSwashes", serif;
   }

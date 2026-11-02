@@ -30,6 +30,31 @@ export const useFontLoader = (config: VideoConfig, verses: VerseData[]) => {
         fontType = selectedFont?.type || "v2";
       }
 
+      // IndoPak script: the QPC page fonts are not used at all (see
+      // getWordFont) — load the bundled IndoPak font instead and skip
+      // the per-page QPC downloads. The canvas waits on fontsLoaded,
+      // so this guarantees the font is ready before measuring/drawing.
+      if (config.quranTextScript === "indopak") {
+        if (loadedFontsCache.current.has("IndoPakNastaleeq")) {
+          setFontsLoaded(true);
+          return;
+        }
+        try {
+          const font = new FontFace(
+            "IndoPakNastaleeq",
+            `url("/fonts/indopak-nastaleeq-waqf-lazim-v4.2.1.woff2")`,
+          );
+          await font.load();
+          document.fonts.add(font);
+          loadedFontsCache.current.add("IndoPakNastaleeq");
+          console.log("Loaded Font: IndoPakNastaleeq (bundled)");
+        } catch (e) {
+          console.error("Failed to load IndoPak font", e);
+        }
+        setFontsLoaded(true);
+        return;
+      }
+
       // Special loading logic for Al-Qadr Font
       if (fontType === "qadr") {
         if (loadedFontsCache.current.has(AL_QADR_FONT.family)) {
@@ -147,7 +172,12 @@ export const useFontLoader = (config: VideoConfig, verses: VerseData[]) => {
     };
 
     loadPageFonts();
-  }, [config.fontFamily, verses, config.textColor]);
+  }, [
+    config.fontFamily,
+    config.quranTextScript,
+    verses,
+    config.textColor,
+  ]);
 
   return { fontsLoaded };
 };
