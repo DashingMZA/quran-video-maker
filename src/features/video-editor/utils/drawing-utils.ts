@@ -97,7 +97,7 @@ export const toArabicIndicDigits = (n: number): string =>
   String(n).replace(/\d/g, (d) => "٠١٢٣٤٥٦٧٨٩"[Number(d)]);
 
 export const getAyahNumberFont = (fontSize: number) =>
-  `normal ${Math.round(fontSize * 0.8)}px "Amiri", "Noto Naskh Arabic", "Traditional Arabic", serif`;
+  `normal ${Math.round(fontSize * 0.65)}px "Amiri", "Noto Naskh Arabic", "Traditional Arabic", serif`;
 
 export const getAyahMarkerWidth = (
   ctx: CanvasRenderingContext2D,
@@ -126,11 +126,22 @@ export const drawAyahMarker = (
   ctx.shadowBlur = 0;
   ctx.fillStyle = color;
   ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
   // LTR on purpose: the canvas around this runs RTL, which would flip
   // the parentheses. LTR keeps "(١)" exactly as written.
   ctx.direction = "ltr";
-  ctx.fillText(`(${digitText})`, centerX, centerY);
+  // Vertical centring by the marker's VISUAL bounds, not the em square:
+  // with textBaseline="middle" the small digit sat high (its glyph sits
+  // on the baseline while the parentheses span the whole em square),
+  // which is why the marker floated above the text. Measure the real
+  // glyph bounds and place the baseline so the visual centre lands
+  // exactly on centerY.
+  const text = `(${digitText})`;
+  const metrics = ctx.measureText(text);
+  const ascent = metrics.actualBoundingBoxAscent || fontSize * 0.7;
+  const descent = metrics.actualBoundingBoxDescent || fontSize * 0.3;
+  ctx.textBaseline = "alphabetic";
+  const baselineY = centerY + (ascent - descent) / 2;
+  ctx.fillText(text, centerX, baselineY);
   ctx.restore();
 };
 
