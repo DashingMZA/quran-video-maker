@@ -172,6 +172,112 @@ export default function SidebarStyle({
       </div>
 
       <div className="grid grid-cols-1 gap-2">
+        {/* Subtitles */}
+        <div className="p-4 bg-[#1a1a1e] rounded-xl border border-white/5 space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div
+                className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${config.showTranslation ? "bg-studio-accent text-white" : "bg-black/40 text-zinc-500"}`}
+              >
+                <Subtitles className="w-4 h-4" />
+              </div>
+              <span className="text-sm font-medium text-white">Subtitles</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <ColorPicker
+                color={config.translationColor}
+                onChange={(c) => setConfig({ ...config, translationColor: c })}
+              />
+              <ToggleSwitch
+                checked={config.showTranslation}
+                onChange={() =>
+                  setConfig({
+                    ...config,
+                    showTranslation: !config.showTranslation,
+                  })
+                }
+              />
+            </div>
+          </div>
+
+          {config.showTranslation && (
+            <div className="space-y-4 pt-2 border-t border-white/5 animate-in slide-in-from-top-2 duration-200">
+              <div className="space-y-2">
+                <div className="flex justify-between text-[10px] text-zinc-400 font-bold uppercase">
+                  <span>Animation Mode</span>
+                </div>
+                <div className="flex bg-black/40 p-1 rounded-lg">
+                  <button
+                    onClick={() =>
+                      setConfig({
+                        ...config,
+                        translationHighlightMode: "karaoke",
+                      })
+                    }
+                    className={`flex-1 py-1.5 text-[10px] font-bold rounded-md transition-all ${config.translationHighlightMode === "karaoke" ? "bg-studio-accent text-white shadow-sm" : "text-zinc-500 hover:text-zinc-300"}`}
+                  >
+                    Karaoke
+                  </button>
+                  <button
+                    onClick={() =>
+                      setConfig({ ...config, translationHighlightMode: "word" })
+                    }
+                    className={`flex-1 py-1.5 text-[10px] font-bold rounded-md transition-all ${config.translationHighlightMode === "word" ? "bg-studio-accent text-white shadow-sm" : "text-zinc-500 hover:text-zinc-300"}`}
+                  >
+                    Word
+                  </button>
+                  <button
+                    onClick={() =>
+                      setConfig({ ...config, translationHighlightMode: "none" })
+                    }
+                    className={`flex-1 py-1.5 text-[10px] font-bold rounded-md transition-all ${config.translationHighlightMode === "none" ? "bg-studio-accent text-white shadow-sm" : "text-zinc-500 hover:text-zinc-300"}`}
+                  >
+                    Normal
+                  </button>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex justify-between text-[10px] text-zinc-400 font-bold uppercase">
+                  <span>Subtitle Size</span>
+                  <span>{config.translationFontSize}px</span>
+                </div>
+                <input
+                  type="range"
+                  min="20"
+                  max="80"
+                  value={config.translationFontSize}
+                  onChange={(e) =>
+                    setConfig({
+                      ...config,
+                      translationFontSize: parseInt(e.target.value),
+                    })
+                  }
+                  className="w-full accent-studio-accent h-2 bg-black/50 rounded-lg appearance-none cursor-pointer"
+                />
+              </div>
+              <div className="space-y-2">
+                <div className="flex justify-between text-[10px] text-zinc-400 font-bold uppercase">
+                  <span>Vertical Position</span>
+                  <span>{config.translationY}%</span>
+                </div>
+                <input
+                  type="range"
+                  min="10"
+                  max="95"
+                  value={config.translationY}
+                  onChange={(e) =>
+                    setConfig({
+                      ...config,
+                      translationY: parseInt(e.target.value),
+                    })
+                  }
+                  className="w-full accent-studio-accent h-2 bg-black/50 rounded-lg appearance-none cursor-pointer"
+                />
+              </div>
+            </div>
+          )}
+        </div>
         {/* Quran Text Color - NEW */}
         <div className="flex items-center justify-between p-3 bg-[#1a1a1e] rounded-xl border border-white/5">
           <div className="flex items-center gap-3">
@@ -581,113 +687,6 @@ export default function SidebarStyle({
                   </div>
                 </>
               )}
-            </div>
-          )}
-        </div>
-
-        {/* Subtitles */}
-        <div className="p-4 bg-[#1a1a1e] rounded-xl border border-white/5 space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div
-                className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${config.showTranslation ? "bg-studio-accent text-white" : "bg-black/40 text-zinc-500"}`}
-              >
-                <Subtitles className="w-4 h-4" />
-              </div>
-              <span className="text-sm font-medium text-white">Subtitles</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <ColorPicker
-                color={config.translationColor}
-                onChange={(c) => setConfig({ ...config, translationColor: c })}
-              />
-              <ToggleSwitch
-                checked={config.showTranslation}
-                onChange={() =>
-                  setConfig({
-                    ...config,
-                    showTranslation: !config.showTranslation,
-                  })
-                }
-              />
-            </div>
-          </div>
-
-          {config.showTranslation && (
-            <div className="space-y-4 pt-2 border-t border-white/5 animate-in slide-in-from-top-2 duration-200">
-              <div className="space-y-2">
-                <div className="flex justify-between text-[10px] text-zinc-400 font-bold uppercase">
-                  <span>Animation Mode</span>
-                </div>
-                <div className="flex bg-black/40 p-1 rounded-lg">
-                  <button
-                    onClick={() =>
-                      setConfig({
-                        ...config,
-                        translationHighlightMode: "karaoke",
-                      })
-                    }
-                    className={`flex-1 py-1.5 text-[10px] font-bold rounded-md transition-all ${config.translationHighlightMode === "karaoke" ? "bg-studio-accent text-white shadow-sm" : "text-zinc-500 hover:text-zinc-300"}`}
-                  >
-                    Karaoke
-                  </button>
-                  <button
-                    onClick={() =>
-                      setConfig({ ...config, translationHighlightMode: "word" })
-                    }
-                    className={`flex-1 py-1.5 text-[10px] font-bold rounded-md transition-all ${config.translationHighlightMode === "word" ? "bg-studio-accent text-white shadow-sm" : "text-zinc-500 hover:text-zinc-300"}`}
-                  >
-                    Word
-                  </button>
-                  <button
-                    onClick={() =>
-                      setConfig({ ...config, translationHighlightMode: "none" })
-                    }
-                    className={`flex-1 py-1.5 text-[10px] font-bold rounded-md transition-all ${config.translationHighlightMode === "none" ? "bg-studio-accent text-white shadow-sm" : "text-zinc-500 hover:text-zinc-300"}`}
-                  >
-                    Normal
-                  </button>
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <div className="flex justify-between text-[10px] text-zinc-400 font-bold uppercase">
-                  <span>Subtitle Size</span>
-                  <span>{config.translationFontSize}px</span>
-                </div>
-                <input
-                  type="range"
-                  min="20"
-                  max="80"
-                  value={config.translationFontSize}
-                  onChange={(e) =>
-                    setConfig({
-                      ...config,
-                      translationFontSize: parseInt(e.target.value),
-                    })
-                  }
-                  className="w-full accent-studio-accent h-2 bg-black/50 rounded-lg appearance-none cursor-pointer"
-                />
-              </div>
-              <div className="space-y-2">
-                <div className="flex justify-between text-[10px] text-zinc-400 font-bold uppercase">
-                  <span>Vertical Position</span>
-                  <span>{config.translationY}%</span>
-                </div>
-                <input
-                  type="range"
-                  min="10"
-                  max="95"
-                  value={config.translationY}
-                  onChange={(e) =>
-                    setConfig({
-                      ...config,
-                      translationY: parseInt(e.target.value),
-                    })
-                  }
-                  className="w-full accent-studio-accent h-2 bg-black/50 rounded-lg appearance-none cursor-pointer"
-                />
-              </div>
             </div>
           )}
         </div>
