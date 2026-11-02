@@ -5,7 +5,7 @@
 Inspired by and built with appreciation for [Quran Video Studio](https://github.com/quran8vs/Quran-Video-Studio). Many thanks to the original project contributors.
 
 [![Download](https://img.shields.io/badge/Download-000000?style=for-the-badge)](https://github.com/DashingMZA/quran-video-maker/releases)
-[![Quran Studio](https://img.shields.io/badge/quran-video-maker-111111?style=for-the-badge&labelColor=22C55E)](https://github.com/DashingMZA/quran-video-maker/releases)
+[![Quran Video Maker](https://img.shields.io/badge/Quran-VideoMaker-111111?style=for-the-badge&labelColor=22C55E)](https://github.com/DashingMZA/quran-video-maker/releases)
 [![Version](https://img.shields.io/github/v/release/DashingMZA/quran-video-maker?style=for-the-badge&label=)](https://github.com/DashingMZA/quran-video-maker/releases)
 
 The app is built with modern web technologies (React, Vite, TypeScript, Tailwind CSS) and can run in the browser or as a Desktop app with native installers for Windows, macOS, and Linux.
