@@ -96,7 +96,7 @@ export const toArabicIndicDigits = (n: number): string =>
   String(n).replace(/\d/g, (d) => "٠١٢٣٤٥٦٧٨٩"[Number(d)]);
 
 export const getAyahNumberFont = (fontSize: number) =>
-  `normal ${Math.round(fontSize * 0.72)}px "Amiri", "Noto Naskh Arabic", "Traditional Arabic", serif`;
+  `normal ${Math.round(fontSize * 0.6)}px "Amiri", "Noto Naskh Arabic", "Traditional Arabic", serif`;
 
 export const getAyahMarkerWidth = (
   ctx: CanvasRenderingContext2D,
@@ -108,7 +108,9 @@ export const getAyahMarkerWidth = (
   const digitWidth = ctx.measureText(digitText).width;
   ctx.restore();
   // Digit width + padding on both sides so the circle clears the digit.
-  return digitWidth + fontSize * 0.7;
+  // Kept snug on purpose: the circle must hold only the digit, with no
+  // neighbouring Arabic word falling inside it.
+  return digitWidth + fontSize * 0.5;
 };
 
 export const drawAyahMarker = (
@@ -123,11 +125,13 @@ export const drawAyahMarker = (
   ctx.font = getAyahNumberFont(fontSize);
   ctx.shadowBlur = 0;
   const digitWidth = ctx.measureText(digitText).width;
-  const rx = digitWidth / 2 + fontSize * 0.32;
-  const ry = fontSize * 0.58;
+  // Small, snug circle: diameter ~0.88 x fontSize (was ~1.16 x), so it
+  // sits around the digit only and never swallows a neighbouring word.
+  const rx = digitWidth / 2 + fontSize * 0.2;
+  const ry = fontSize * 0.44;
   ctx.strokeStyle = color;
   ctx.fillStyle = color;
-  ctx.lineWidth = Math.max(2, fontSize * 0.045);
+  ctx.lineWidth = Math.max(2, fontSize * 0.04);
   ctx.beginPath();
   ctx.ellipse(centerX, centerY, rx, ry, 0, 0, Math.PI * 2);
   ctx.stroke();
