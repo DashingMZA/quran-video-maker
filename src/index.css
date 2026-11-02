@@ -1,17 +1,28 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+/*
+ * Tailwind v4 (CSS-first config): the old tailwind.config.ts is gone.
+ * Its theme now lives here in @theme, which is what generates the
+ * bg-studio-*, text-studio-*, border-studio-*, ring-studio-*,
+ * divide-studio-*, from/via-studio-* and accent-studio-* utilities
+ * used across src/ (~180 usages). Tailwind v4 emits these --color-*
+ * variables on :root itself, so var(--color-studio-*) still works
+ * everywhere else (html/body background, scrollbars, arbitrary values).
+ */
+@theme {
+  --color-studio-bg: #09090b;
+  --color-studio-panel: #18181b;
+  --color-studio-border: #27272a;
+  --color-studio-text: #f4f4f5;
+  --color-studio-textMuted: #a1a1aa;
+  --color-studio-accent: #a3004c;
+  --color-studio-accentHover: #7a0038;
+
+  --font-sans: "Inter", sans-serif;
+}
 
 @layer base {
   :root {
-    --color-studio-bg: #09090b;
-    --color-studio-panel: #18181b;
-    --color-studio-border: #27272a;
-    --color-studio-text: #f4f4f5;
-    --color-studio-textMuted: #a1a1aa;
-    --color-studio-accent: #a3004c;
-    --color-studio-accentHover: #7a0038;
-
     /* Subtle shadows for dark mode */
     --shadow-border: 0 0 0 1px rgba(255, 255, 255, 0.08);
     --shadow-border-hover: 0 0 0 1px rgba(255, 255, 255, 0.13);
