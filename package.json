@@ -1,7 +1,7 @@
 {
   "name": "quran-video-maker",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "QQuran Video Maker is a free tool to create beautiful videos and screenshots of Quran verses. Share your faith and inspire others.",
   "license": "GPL-3.0-only",
   "repository": {
