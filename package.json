@@ -1,0 +1,87 @@
+{
+  "name": "quran-video-maker",
+  "private": true,
+  "version": "1.0.0",
+  "description": "QQuran Video Maker is a free tool to create beautiful videos and screenshots of Quran verses. Share your faith and inspire others.",
+  "license": "GPL-3.0-only",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DashingMZA/quran-video-maker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/DashingMZA/quran-video-maker/issues"
+  },
+  "homepage": "https://github.com/DashingMZA/quran-video-maker#readme",
+  "keywords": [
+    "Quran video maker",
+    "Islamic video editor",
+    "Quran video studio",
+    "Quran videos",
+    "Quran video creator"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "test": "vitest run --config vitest.config.ts",
+    "test:watch": "vitest --config vitest.config.ts",
+    "preview": "vite preview",
+    "lint": "eslint .",
+    "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
+    "typecheck": "tsc --noEmit",
+    "fetch:ffmpeg": "node scripts/fetch-ffmpeg.mjs",
+    "prepare:ffmpeg": "node scripts/fetch-ffmpeg.mjs && node scripts/prepare-ffmpeg.mjs",
+    "app:icon": "tauri icon",
+    "app:dev": "pnpm prepare:ffmpeg && tauri dev",
+    "app:build": "pnpm prepare:ffmpeg && tauri build",
+    "predeploy:cf": "pnpm build",
+    "deploy:cf": "wrangler deploy",
+    "tauri": "tauri"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2.12.4",
+    "@tauri-apps/plugin-dialog": "^2.8.4",
+    "@tauri-apps/plugin-fs": "^2.7.1",
+    "@tauri-apps/plugin-process": "^2.4.0",
+    "@tauri-apps/plugin-shell": "^2.6.0",
+    "@tauri-apps/plugin-updater": "^2.14.1",
+    "jszip": "^3.10.2",
+    "lucide-react": "^1.66.0",
+    "mediabunny": "^1.65.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "react-modern-audio-player": "^2.4.4"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@tailwindcss/postcss": "^4.3.3",
+    "@tauri-apps/cli": "^2.12.4",
+    "@types/dom-webcodecs": "0.1.19",
+    "@types/node": "^24.19.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@typescript-eslint/eslint-plugin": "^8.72.1",
+    "@typescript-eslint/parser": "^8.72.1",
+    "@vitejs/plugin-react": "^6.2.1",
+    "autoprefixer": "^10.6.2",
+    "dotenv-cli": "^11.1.0",
+    "eslint": "^10.14.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.7",
+    "globals": "^17.14.0",
+    "jsdom": "^30.1.3",
+    "postcss": "^8.5.32",
+    "prettier": "^3.9.10",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^7.0.2",
+    "typescript-eslint": "^8.72.1",
+    "vite": "^8.3.5",
+    "vitest": "^5.0.5",
+    "wrangler": "^4.156.2"
+  },
+  "type": "module",
+  "packageManager": "pnpm@12.9.1",
+  "engines": {
+    "node": ">=24"
+  }
+}

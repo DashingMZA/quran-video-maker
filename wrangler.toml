@@ -1,0 +1,11 @@
+# Cloudflare Workers — static-asset hosting for the Quran Studio web app.
+# No Worker code is needed: Cloudflare serves ./dist directly at the edge.
+# Build first (`pnpm build`), then `pnpm deploy:cf`.
+# (VITE_* env vars are baked in at build time — set them before building.)
+
+name = "quran-video-maker"
+compatibility_date = "2026-11-02"
+
+[assets]
+directory = "./dist"
+not_found_handling = "single-page-application"

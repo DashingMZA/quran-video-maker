@@ -1,0 +1,75 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Quran Video Maker",
+  "version": "1.0.0",
+  "identifier": "com.csofts.quranvideomaker",
+  "build": {
+    "beforeDevCommand": "pnpm dev",
+    "beforeBuildCommand": "pnpm build",
+    "devUrl": "http://localhost:3000",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "withGlobalTauri": true,
+    "windows": [
+      {
+        "title": "Quran Video Maker",
+        "width": 1200,
+        "height": 910,
+        "minWidth": 1000,
+        "minHeight": 800,
+        "center": true,
+        "decorations": false,
+        "transparent": true,
+        "maximizable": false,
+        "visible": true,
+        "fullscreen": false,
+        "resizable": true
+      }
+    ],
+    "security": {
+      "csp": null,
+      "assetProtocol": {
+        "enable": true,
+        "scope": ["**"]
+      }
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "createUpdaterArtifacts": true,
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "publisher": "cSofts",
+    "category": "Video",
+    "shortDescription": "Quran Video Maker",
+    "longDescription": "Quran Video Maker is a free tool to create beautiful videos and screenshots of Quran verses. Share your faith and inspire others.",
+    "copyright": "Copyright © 2026 cSofts.com. All rights reserved.",
+    "externalBin": ["binaries/ffmpeg", "binaries/ffprobe"],
+    "windows": {
+      "nsis": {
+        "installMode": "currentUser",
+        "installerIcon": "icons/icon.ico",
+        "uninstallerIcon": "icons/icon.ico"
+      }
+    },
+    "macOS": {
+      "minimumSystemVersion": "11.0"
+    }
+  },
+  "plugins": {
+    "updater": {
+      "active": true,
+      "endpoints": [
+        "https://github.com/DashingMZA/quran-video-maker/releases/latest/download/latest.json"
+      ],
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEI2Q0ZFQjA0MDZBOENFMDEKUldRQnpxZ0dCT3ZQdHR0aDl4STczdVh3Y2hiTENSTEUyTWFKRi9hZFQ0MGx4Z3NxMDNyRTllSXMK"
+    }
+  }
+}

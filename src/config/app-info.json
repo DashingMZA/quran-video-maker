@@ -1,0 +1,38 @@
+{
+  "appName": "Quran Video Studio",
+  "version": "v1.0.0",
+  "author": "Muhammad Zaheer Ahmad",
+  "description": "Create Quran recitation videos with timed text, translations, rich backgrounds, and fast MP4 export.",
+  "socialLinks": [
+    {
+      "platform": "github",
+      "url": "https://github.com/DashingMZA",
+      "label": "Muhammad Zaheer Ahmad"
+    },
+    {
+      "platform": "linkedin",
+      "url": "https://www.linkedin.com/in/mzaheera/",
+      "label": "Muhammad Zaheer Ahmad"
+    },
+    {
+      "platform": "instagram",
+      "url": "https://www.instagram.com/dashing.mza",
+      "label": "Muhammad Zaheer Ahmad"
+    },
+    {
+      "platform": "facebook",
+      "url": "https://www.facebook.com/dashing.mza",
+      "label": "Muhammad Zaheer Ahmad"
+    },
+    {
+      "platform": "tiktok",
+      "url": "https://www.tiktok.com/@dashing.mza",
+      "label": "Muhammad Zaheer Ahmad"
+    },
+    {
+      "platform": "x",
+      "url": "https://x.com/Dashing_ZB",
+      "label": "Muhammad Zaheer Ahmad"
+    }
+  ]
+}

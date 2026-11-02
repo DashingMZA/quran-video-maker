@@ -1,0 +1,22 @@
+[package]
+name = "quran-video-maker"
+version = "1.0.1"
+description = "Quran Video Maker is a free tool to create beautiful videos and screenshots of Quran verses. Share your faith and inspire others."
+authors = ["Muhammad Zaheer Ahmad"]
+homepage = "https://github.com/DashingMZA/quran-video-maker"
+edition = "2024"
+rust-version = "1.99.1"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["protocol-asset"] }
+tauri-plugin-fs = "2"
+tauri-plugin-dialog = "2"
+tauri-plugin-shell = "2"
+tauri-plugin-log = "2"
+tauri-plugin-updater = "2"
+tauri-plugin-process = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
