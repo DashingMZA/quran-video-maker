@@ -17,7 +17,7 @@ export interface StreamPart {
   font: string;
   width: number;
   type: "text" | "end";
-  // IndoPak end words are drawn as a circle marker (see drawing-utils),
+  // IndoPak end words are drawn as a parentheses marker (see drawing-utils),
   // not as plain text — the IndoPak font's digits are empty glyphs.
   isAyahMarker?: boolean;
 }
@@ -95,7 +95,7 @@ export const renderStreamMode = ({
         if (nextWord && nextWord.char_type_name === "end") {
           const markerDisplay = getWordDisplay(nextWord, fontType, config.quranTextScript);
           if (config.quranTextScript === "indopak") {
-            // Circle marker: the IndoPak font's digits are empty glyphs,
+            // Parentheses marker: the IndoPak font's digits are empty glyphs,
             // so measuring/drawing the bare digit would be invisible.
             const digitText =
               markerDisplay || toArabicIndicDigits(verse.verseNumber);
@@ -404,7 +404,7 @@ export const renderSingleMode = ({
       config.quranTextScript === "indopak" &&
       word.char_type_name === "end"
     ) {
-      // Circle marker instead of the bare (invisible) IndoPak digit.
+      // Parentheses marker instead of the bare (invisible) IndoPak digit.
       displayWord =
         displayWord || toArabicIndicDigits(activeVerse?.verseNumber ?? 0);
       fontStr = getAyahNumberFont(config.fontSize);
@@ -546,7 +546,7 @@ export const renderPageMode = ({
       config.quranTextScript === "indopak" &&
       word.char_type_name === "end"
     ) {
-      // Circle marker instead of the bare (invisible) IndoPak digit.
+      // Parentheses marker instead of the bare (invisible) IndoPak digit.
       displayWord =
         displayWord || toArabicIndicDigits(activeVerse?.verseNumber ?? 0);
       fontStr = getAyahNumberFont(config.fontSize);

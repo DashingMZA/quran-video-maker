@@ -80,7 +80,7 @@ export const getWordDisplay = (
   return displayWord;
 };
 
-// IndoPak end-of-ayah fallback (circle marker).
+// IndoPak end-of-ayah fallback (parentheses marker, e.g. "(١)").
 //
 // Root cause (verified 2026-11-02 against the bundled font): the API DOES
 // return the ayah number for IndoPak end words (text_indopak = "١", "٢",
@@ -88,15 +88,16 @@ export const getWordDisplay = (
 // are EMPTY glyphs — 0 contours, 0 advance — so a bare digit renders
 // invisible. Only ٠ (U+0660) has a real glyph. Uthmani does not hit this
 // because its end words use a QPC code_v2 glyph that draws the whole
-// ornate marker. So for IndoPak we draw the marker ourselves: a circle
-// (oval for multi-digit numbers) in verseNumberColor with the digit
-// inside, using a system Naskh stack — never IndoPakNastaleeq, or the
-// browser would pick its empty glyph instead of falling back.
+// ornate marker. So for IndoPak we draw the marker ourselves: the digit
+// in parentheses, in verseNumberColor, using a system Naskh stack —
+// never IndoPakNastaleeq, or the browser would pick its empty glyph
+// instead of falling back. (An earlier circled version was replaced
+// with parentheses at the user's request.)
 export const toArabicIndicDigits = (n: number): string =>
   String(n).replace(/\d/g, (d) => "٠١٢٣٤٥٦٧٨٩"[Number(d)]);
 
 export const getAyahNumberFont = (fontSize: number) =>
-  `normal ${Math.round(fontSize * 0.6)}px "Amiri", "Noto Naskh Arabic", "Traditional Arabic", serif`;
+  `normal ${Math.round(fontSize * 0.8)}px "Amiri", "Noto Naskh Arabic", "Traditional Arabic", serif`;
 
 export const getAyahMarkerWidth = (
   ctx: CanvasRenderingContext2D,
@@ -105,12 +106,11 @@ export const getAyahMarkerWidth = (
 ) => {
   ctx.save();
   ctx.font = getAyahNumberFont(fontSize);
-  const digitWidth = ctx.measureText(digitText).width;
+  // Drawn LTR (see drawAyahMarker) so the width is measured the same way.
+  ctx.direction = "ltr";
+  const width = ctx.measureText(`(${digitText})`).width;
   ctx.restore();
-  // Digit width + padding on both sides so the circle clears the digit.
-  // Kept snug on purpose: the circle must hold only the digit, with no
-  // neighbouring Arabic word falling inside it.
-  return digitWidth + fontSize * 0.5;
+  return width;
 };
 
 export const drawAyahMarker = (
@@ -124,20 +124,13 @@ export const drawAyahMarker = (
   ctx.save();
   ctx.font = getAyahNumberFont(fontSize);
   ctx.shadowBlur = 0;
-  const digitWidth = ctx.measureText(digitText).width;
-  // Small, snug circle: diameter ~0.88 x fontSize (was ~1.16 x), so it
-  // sits around the digit only and never swallows a neighbouring word.
-  const rx = digitWidth / 2 + fontSize * 0.2;
-  const ry = fontSize * 0.44;
-  ctx.strokeStyle = color;
   ctx.fillStyle = color;
-  ctx.lineWidth = Math.max(2, fontSize * 0.04);
-  ctx.beginPath();
-  ctx.ellipse(centerX, centerY, rx, ry, 0, 0, Math.PI * 2);
-  ctx.stroke();
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillText(digitText, centerX, centerY);
+  // LTR on purpose: the canvas around this runs RTL, which would flip
+  // the parentheses. LTR keeps "(١)" exactly as written.
+  ctx.direction = "ltr";
+  ctx.fillText(`(${digitText})`, centerX, centerY);
   ctx.restore();
 };
 
