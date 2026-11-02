@@ -3,6 +3,7 @@ import { AlertCircle } from "lucide-react";
 import { VideoConfig } from "../features/video-editor/types";
 import { Surah, VerseData } from "../features/quran/types";
 import SidebarSelection from "./sidebar/SidebarSelection";
+import SidebarTranslation from "./sidebar/SidebarTranslation";
 import SidebarAudio from "./sidebar/SidebarAudio";
 import SidebarFormat from "./sidebar/SidebarFormat";
 import { isTauri } from "../shared/utils/platform";
@@ -75,6 +76,8 @@ export default function LeftSidebar({
           setSurahSearch={setSurahSearch}
           onRandomBackground={onRandomBackground}
         />
+
+        <SidebarTranslation config={config} setConfig={setConfig} />
 
         <SidebarAudio config={config} setConfig={setConfig} verses={verses} />
 

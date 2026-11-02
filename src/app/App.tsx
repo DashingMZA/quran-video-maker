@@ -75,6 +75,11 @@ export default function App() {
     backgroundImageY: 50, // Default Center (50%)
 
     aspectRatio: "9:16",
+    // Default translation: Urdu — Fatah Muhammad Jalandhari (234).
+    // The previous id 131 no longer exists in the live Quran.com
+    // resources list and returns no verse translations.
+    translationLanguage: "ur",
+    translationId: 234,
     showTranslation: true,
     translationColor: "#a1a1aa",
     translationHighlightColor: "#ffffff", // Default Highlight White
