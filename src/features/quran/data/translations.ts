@@ -9,7 +9,8 @@
  *
  * NOTE: the old default id 131 no longer appears in the live resources
  * list and returns no verse translations at all (verified 2026-11-02).
- * The Urdu default is now 234 (Fatah Muhammad Jalandhari).
+ * The app default is now English — Saheeh International (20); Urdu
+ * 234 (Fatah Muhammad Jalandhari) remains available in the list.
  */
 export interface TranslationOption {
   id: number;
