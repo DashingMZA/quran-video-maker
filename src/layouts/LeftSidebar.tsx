@@ -51,7 +51,7 @@ export default function LeftSidebar({
           className="text-xl font-bold tracking-tight text-white pointer-events-none"
           data-tauri-drag-region
         >
-          Quran Video Studio
+          Quran Video Maker
         </h1>
       </div>
 

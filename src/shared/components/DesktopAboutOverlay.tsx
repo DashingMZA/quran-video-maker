@@ -154,7 +154,7 @@ export default function DesktopAboutOverlay({
       <div className="flex items-center gap-4">
         <img
           src="/icon/web-app-manifest-512x512.png"
-          alt="Quran Video Studio icon"
+          alt="Quran Video Maker icon"
           className="w-16 h-16 rounded-2xl shadow-lg"
         />
         <div>
