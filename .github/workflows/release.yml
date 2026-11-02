@@ -116,6 +116,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+          # Pixabay background search needs this at Vite build time
+          # (VITE_* vars are baked into the bundle); without it the
+          # released app throws "Missing VITE_PIXABAY_API_KEY".
+          VITE_PIXABAY_API_KEY: ${{ secrets.VITE_PIXABAY_API_KEY }}
         with:
           tagName: ${{ github.ref_name }}
           releaseName: "Quran Video Maker ${{ github.ref_name }}"
