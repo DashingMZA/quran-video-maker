@@ -172,6 +172,78 @@ export default function SidebarStyle({
       </div>
 
       <div className="grid grid-cols-1 gap-2">
+        {/* Quran Text Color - NEW */}
+        <div className="flex items-center justify-between p-3 bg-[#1a1a1e] rounded-xl border border-white/5">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-black/40 text-zinc-500">
+              <Type className="w-4 h-4" />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-sm font-medium text-white">Quran Text</span>
+              <span className="text-[10px] text-zinc-500">Main Text Color</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <ColorPicker
+              color={config.textColor}
+              onChange={(c) => setConfig({ ...config, textColor: c })}
+            />
+          </div>
+        </div>
+
+        {/* Highlight */}
+        <div className="flex items-center justify-between p-3 bg-[#1a1a1e] rounded-xl border border-white/5">
+          <div className="flex items-center gap-3">
+            <div
+              className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${config.enableHighlight ? "bg-studio-accent text-white" : "bg-black/40 text-zinc-500"}`}
+            >
+              <Sparkles className="w-4 h-4" />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-sm font-medium text-white">
+                Active Word
+              </span>
+              <span className="text-[10px] text-zinc-500">Highlight Color</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <ColorPicker
+              color={config.highlightColor}
+              onChange={(c) => setConfig({ ...config, highlightColor: c })}
+            />
+            <ToggleSwitch
+              checked={config.enableHighlight}
+              onChange={() =>
+                setConfig({
+                  ...config,
+                  enableHighlight: !config.enableHighlight,
+                })
+              }
+            />
+          </div>
+        </div>
+
+        {/* End of Ayah Color */}
+        <div className="flex items-center justify-between p-3 bg-[#1a1a1e] rounded-xl border border-white/5">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-black/40 text-zinc-500">
+              <div className="w-4 h-4 rounded-full border-2 border-current opacity-60" />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-sm font-medium text-white">
+                End of Ayah
+              </span>
+              <span className="text-[10px] text-zinc-500">Symbol Color</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <ColorPicker
+              color={config.verseNumberColor}
+              onChange={(c) => setConfig({ ...config, verseNumberColor: c })}
+            />
+          </div>
+        </div>
+
         {/* Subtitles */}
         <div className="p-4 bg-[#1a1a1e] rounded-xl border border-white/5 space-y-4">
           <div className="flex items-center justify-between">
@@ -278,78 +350,6 @@ export default function SidebarStyle({
             </div>
           )}
         </div>
-        {/* Quran Text Color - NEW */}
-        <div className="flex items-center justify-between p-3 bg-[#1a1a1e] rounded-xl border border-white/5">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-black/40 text-zinc-500">
-              <Type className="w-4 h-4" />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-sm font-medium text-white">Quran Text</span>
-              <span className="text-[10px] text-zinc-500">Main Text Color</span>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <ColorPicker
-              color={config.textColor}
-              onChange={(c) => setConfig({ ...config, textColor: c })}
-            />
-          </div>
-        </div>
-
-        {/* Highlight */}
-        <div className="flex items-center justify-between p-3 bg-[#1a1a1e] rounded-xl border border-white/5">
-          <div className="flex items-center gap-3">
-            <div
-              className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${config.enableHighlight ? "bg-studio-accent text-white" : "bg-black/40 text-zinc-500"}`}
-            >
-              <Sparkles className="w-4 h-4" />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-sm font-medium text-white">
-                Active Word
-              </span>
-              <span className="text-[10px] text-zinc-500">Highlight Color</span>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <ColorPicker
-              color={config.highlightColor}
-              onChange={(c) => setConfig({ ...config, highlightColor: c })}
-            />
-            <ToggleSwitch
-              checked={config.enableHighlight}
-              onChange={() =>
-                setConfig({
-                  ...config,
-                  enableHighlight: !config.enableHighlight,
-                })
-              }
-            />
-          </div>
-        </div>
-
-        {/* End of Ayah Color */}
-        <div className="flex items-center justify-between p-3 bg-[#1a1a1e] rounded-xl border border-white/5">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-black/40 text-zinc-500">
-              <div className="w-4 h-4 rounded-full border-2 border-current opacity-60" />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-sm font-medium text-white">
-                End of Ayah
-              </span>
-              <span className="text-[10px] text-zinc-500">Symbol Color</span>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <ColorPicker
-              color={config.verseNumberColor}
-              onChange={(c) => setConfig({ ...config, verseNumberColor: c })}
-            />
-          </div>
-        </div>
-
         <div className="p-4 bg-[#1a1a1e] rounded-xl border border-white/5 space-y-4">
           <div className="grid grid-cols-3 gap-1 bg-black/40 p-1 rounded-lg">
             <button
