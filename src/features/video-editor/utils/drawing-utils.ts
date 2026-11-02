@@ -80,6 +80,63 @@ export const getWordDisplay = (
   return displayWord;
 };
 
+// IndoPak end-of-ayah fallback (circle marker).
+//
+// Root cause (verified 2026-11-02 against the bundled font): the API DOES
+// return the ayah number for IndoPak end words (text_indopak = "١", "٢",
+// ...), but the IndoPak font's Arabic-Indic digits ١-٩ (U+0661-U+0669)
+// are EMPTY glyphs — 0 contours, 0 advance — so a bare digit renders
+// invisible. Only ٠ (U+0660) has a real glyph. Uthmani does not hit this
+// because its end words use a QPC code_v2 glyph that draws the whole
+// ornate marker. So for IndoPak we draw the marker ourselves: a circle
+// (oval for multi-digit numbers) in verseNumberColor with the digit
+// inside, using a system Naskh stack — never IndoPakNastaleeq, or the
+// browser would pick its empty glyph instead of falling back.
+export const toArabicIndicDigits = (n: number): string =>
+  String(n).replace(/\d/g, (d) => "٠١٢٣٤٥٦٧٨٩"[Number(d)]);
+
+export const getAyahNumberFont = (fontSize: number) =>
+  `normal ${Math.round(fontSize * 0.72)}px "Amiri", "Noto Naskh Arabic", "Traditional Arabic", serif`;
+
+export const getAyahMarkerWidth = (
+  ctx: CanvasRenderingContext2D,
+  digitText: string,
+  fontSize: number,
+) => {
+  ctx.save();
+  ctx.font = getAyahNumberFont(fontSize);
+  const digitWidth = ctx.measureText(digitText).width;
+  ctx.restore();
+  // Digit width + padding on both sides so the circle clears the digit.
+  return digitWidth + fontSize * 0.7;
+};
+
+export const drawAyahMarker = (
+  ctx: CanvasRenderingContext2D,
+  digitText: string,
+  centerX: number,
+  centerY: number,
+  fontSize: number,
+  color: string,
+) => {
+  ctx.save();
+  ctx.font = getAyahNumberFont(fontSize);
+  ctx.shadowBlur = 0;
+  const digitWidth = ctx.measureText(digitText).width;
+  const rx = digitWidth / 2 + fontSize * 0.32;
+  const ry = fontSize * 0.58;
+  ctx.strokeStyle = color;
+  ctx.fillStyle = color;
+  ctx.lineWidth = Math.max(2, fontSize * 0.045);
+  ctx.beginPath();
+  ctx.ellipse(centerX, centerY, rx, ry, 0, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(digitText, centerX, centerY);
+  ctx.restore();
+};
+
 export const getWordFont = (
   word: any,
   fontType: string,

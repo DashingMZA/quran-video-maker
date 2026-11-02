@@ -1,11 +1,15 @@
 import { VideoConfig } from "../types";
 import { VerseData } from "../../quran/types";
 import {
+  drawAyahMarker,
   drawCompositedText,
+  getAyahMarkerWidth,
+  getAyahNumberFont,
   getFontType,
   getWordDisplay,
   getWordFont,
   lerp,
+  toArabicIndicDigits,
 } from "./drawing-utils";
 
 export interface StreamPart {
@@ -13,6 +17,9 @@ export interface StreamPart {
   font: string;
   width: number;
   type: "text" | "end";
+  // IndoPak end words are drawn as a circle marker (see drawing-utils),
+  // not as plain text — the IndoPak font's digits are empty glyphs.
+  isAyahMarker?: boolean;
 }
 
 export interface StreamWordLayout {
@@ -87,17 +94,38 @@ export const renderStreamMode = ({
         const nextWord = verse.words[i + 1];
         if (nextWord && nextWord.char_type_name === "end") {
           const markerDisplay = getWordDisplay(nextWord, fontType, config.quranTextScript);
-          const markerFont = getWordFont(nextWord, fontType, config);
+          if (config.quranTextScript === "indopak") {
+            // Circle marker: the IndoPak font's digits are empty glyphs,
+            // so measuring/drawing the bare digit would be invisible.
+            const digitText =
+              markerDisplay || toArabicIndicDigits(verse.verseNumber);
+            const markerFont = getAyahNumberFont(config.fontSize);
+            const markerWidth = getAyahMarkerWidth(
+              ctx,
+              digitText,
+              config.fontSize,
+            );
+            parts.push({
+              text: digitText,
+              font: markerFont,
+              width: markerWidth,
+              type: "end",
+              isAyahMarker: true,
+            });
+            totalWidth += 10 + markerWidth;
+          } else {
+            const markerFont = getWordFont(nextWord, fontType, config);
 
-          ctx.font = markerFont;
-          const markerWidth = ctx.measureText(markerDisplay).width;
-          parts.push({
-            text: markerDisplay,
-            font: markerFont,
-            width: markerWidth,
-            type: "end",
-          });
-          totalWidth += 10 + markerWidth;
+            ctx.font = markerFont;
+            const markerWidth = ctx.measureText(markerDisplay).width;
+            parts.push({
+              text: markerDisplay,
+              font: markerFont,
+              width: markerWidth,
+              type: "end",
+            });
+            totalWidth += 10 + markerWidth;
+          }
         }
 
         let start = 0,
@@ -231,8 +259,19 @@ export const renderStreamMode = ({
             ctx.shadowBlur = 0;
             if (part.type === "end") ctx.fillStyle = config.verseNumberColor;
             else ctx.fillStyle = config.textColor;
-            ctx.textAlign = "right";
-            ctx.fillText(part.text, currentPartX, 0);
+            if (part.isAyahMarker) {
+              drawAyahMarker(
+                ctx,
+                part.text,
+                currentPartX - part.width / 2,
+                0,
+                config.fontSize,
+                config.verseNumberColor,
+              );
+            } else {
+              ctx.textAlign = "right";
+              ctx.fillText(part.text, currentPartX, 0);
+            }
           }
           const spacing = part.type === "end" ? 0 : 10;
           currentPartX -= part.width + spacing;
@@ -247,8 +286,19 @@ export const renderStreamMode = ({
           ctx.shadowBlur = 0;
           if (part.type === "end") ctx.fillStyle = config.verseNumberColor;
           else ctx.fillStyle = config.textColor;
-          ctx.textAlign = "right";
-          ctx.fillText(part.text, currentPartX, 0);
+          if (part.isAyahMarker) {
+            drawAyahMarker(
+              ctx,
+              part.text,
+              currentPartX - part.width / 2,
+              0,
+              config.fontSize,
+              config.verseNumberColor,
+            );
+          } else {
+            ctx.textAlign = "right";
+            ctx.fillText(part.text, currentPartX, 0);
+          }
           const spacing = part.type === "end" ? 0 : 10;
           currentPartX -= part.width + spacing;
         });
@@ -347,14 +397,27 @@ export const renderSingleMode = ({
   ctx.direction = "rtl";
 
   const measuredWords = chunkToRender.map((word) => {
-    const displayWord = getWordDisplay(word, fontType, config.quranTextScript);
-    const fontStr = getWordFont(word, fontType, config);
-    ctx.font = fontStr;
+    let displayWord = getWordDisplay(word, fontType, config.quranTextScript);
+    let fontStr = getWordFont(word, fontType, config);
+    let width: number;
+    if (
+      config.quranTextScript === "indopak" &&
+      word.char_type_name === "end"
+    ) {
+      // Circle marker instead of the bare (invisible) IndoPak digit.
+      displayWord =
+        displayWord || toArabicIndicDigits(activeVerse?.verseNumber ?? 0);
+      fontStr = getAyahNumberFont(config.fontSize);
+      width = getAyahMarkerWidth(ctx, displayWord, config.fontSize);
+    } else {
+      ctx.font = fontStr;
+      width = ctx.measureText(displayWord).width;
+    }
     return {
       ...word,
       displayWord,
       font: fontStr,
-      width: ctx.measureText(displayWord).width,
+      width,
     };
   });
 
@@ -407,8 +470,22 @@ export const renderSingleMode = ({
         ctx.fillStyle = config.verseNumberColor;
       else ctx.fillStyle = config.textColor;
 
-      ctx.textAlign = "right";
-      ctx.fillText(word.displayWord, currentX, contentAreaCenterY);
+      if (
+        config.quranTextScript === "indopak" &&
+        word.char_type_name === "end"
+      ) {
+        drawAyahMarker(
+          ctx,
+          word.displayWord,
+          currentX - word.width / 2,
+          contentAreaCenterY,
+          config.fontSize,
+          config.verseNumberColor,
+        );
+      } else {
+        ctx.textAlign = "right";
+        ctx.fillText(word.displayWord, currentX, contentAreaCenterY);
+      }
     }
 
     currentX -= word.width + globalWordSpacing;
@@ -461,12 +538,30 @@ export const renderPageMode = ({
 
   for (let i = 0; i < currentVerseWords.length; i++) {
     const word = currentVerseWords[i];
-    const displayWord = getWordDisplay(word, fontType, config.quranTextScript);
-    const fontStr = getWordFont(word, fontType, config);
-
-    ctx.font = fontStr;
-    const metrics = ctx.measureText(displayWord + " ");
-    const effectiveWidth = metrics.width + globalWordSpacing;
+    let displayWord = getWordDisplay(word, fontType, config.quranTextScript);
+    let fontStr = getWordFont(word, fontType, config);
+    let metrics: TextMetrics;
+    let effectiveWidth: number;
+    if (
+      config.quranTextScript === "indopak" &&
+      word.char_type_name === "end"
+    ) {
+      // Circle marker instead of the bare (invisible) IndoPak digit.
+      displayWord =
+        displayWord || toArabicIndicDigits(activeVerse?.verseNumber ?? 0);
+      fontStr = getAyahNumberFont(config.fontSize);
+      const markerWidth = getAyahMarkerWidth(
+        ctx,
+        displayWord,
+        config.fontSize,
+      );
+      metrics = { width: markerWidth } as TextMetrics;
+      effectiveWidth = markerWidth + globalWordSpacing;
+    } else {
+      ctx.font = fontStr;
+      metrics = ctx.measureText(displayWord + " ");
+      effectiveWidth = metrics.width + globalWordSpacing;
+    }
     const currentLineWidth = currentLineWords.reduce(
       (acc, w) => acc + w.effectiveWidth,
       0,
@@ -548,8 +643,22 @@ export const renderPageMode = ({
           ctx.fillStyle = config.verseNumberColor;
         else ctx.fillStyle = config.textColor;
 
-        ctx.textAlign = "right";
-        ctx.fillText(word.displayWord, currentX, y);
+        if (
+          config.quranTextScript === "indopak" &&
+          word.char_type_name === "end"
+        ) {
+          drawAyahMarker(
+            ctx,
+            word.displayWord,
+            currentX - word.width / 2,
+            y,
+            config.fontSize,
+            config.verseNumberColor,
+          );
+        } else {
+          ctx.textAlign = "right";
+          ctx.fillText(word.displayWord, currentX, y);
+        }
       }
       currentX -= word.effectiveWidth;
       ctx.shadowBlur = 0;
