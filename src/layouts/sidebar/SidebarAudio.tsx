@@ -1,5 +1,12 @@
-import React, { useState, lazy, Suspense } from "react";
-import { FileAudio, Mic, Mic2, SlidersHorizontal } from "lucide-react";
+import React, { useState, useRef, useEffect, lazy, Suspense } from "react";
+import {
+  FileAudio,
+  Mic,
+  Mic2,
+  ChevronDown,
+  Check,
+  SlidersHorizontal,
+} from "lucide-react";
 import { VideoConfig } from "../../features/video-editor/types";
 import { VerseData } from "../../features/quran/types";
 import { RECITERS } from "../../shared/constants";
@@ -20,6 +27,33 @@ export default function SidebarAudio({
   verses = [],
 }: SidebarAudioProps) {
   const [isStudioOpen, setIsStudioOpen] = useState(false);
+  const [isReciterOpen, setIsReciterOpen] = useState(false);
+  const [reciterSearch, setReciterSearch] = useState("");
+  const reciterDropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close the reciter dropdown on outside click (same pattern as the
+  // Translations dropdowns in SidebarTranslation).
+  useEffect(() => {
+    if (!isReciterOpen) return;
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        reciterDropdownRef.current &&
+        !reciterDropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsReciterOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isReciterOpen]);
+
+  const selectedReciter =
+    RECITERS.find((r) => r.id === config.reciterId) ??
+    RECITERS.find((r) => String(r.id) === String(config.reciterId)) ??
+    RECITERS[0];
+  const filteredReciters = RECITERS.filter((r) =>
+    r.name.toLowerCase().includes(reciterSearch.toLowerCase()),
+  );
   const selectedModeClasses =
     "bg-studio-accent text-white shadow-[0_0_20px_rgba(163,0,76,0.25)]";
   const idleModeClasses =
@@ -86,41 +120,107 @@ export default function SidebarAudio({
         </div>
       )}
 
-      <div className="bg-[#1a1a1e] border border-white/5 rounded-xl overflow-hidden">
-        <div className="max-h-[200px] overflow-y-auto custom-scrollbar p-1">
-          {RECITERS.map((r) => (
-            <button
-              key={r.id}
-              onClick={() =>
-                setConfig({
-                  ...config,
-                  reciterId: r.id,
-                  audioSource: "reciter",
-                })
-              }
-              className={`group flex items-center gap-3 p-2.5 rounded-lg transition-all text-left w-full mb-1 last:mb-0
-                            ${
-                              config.reciterId === r.id
-                                ? "bg-studio-accent text-white shadow-md"
-                                : "hover:bg-white/5 text-zinc-400 hover:text-white"
-                            }`}
-            >
-              <div
-                className={`w-8 h-8 shrink-0 rounded-full flex items-center justify-center transition-colors ${config.reciterId === r.id ? "bg-white/20" : "bg-black/20"}`}
+      {/* Reciter dropdown — same pattern as the Translations dropdowns */}
+      <div className="space-y-2">
+        <span className="text-[10px] uppercase font-bold text-zinc-500 tracking-wider">
+          Reciter
+        </span>
+        <div className="relative" ref={reciterDropdownRef}>
+          <button
+            onClick={() => {
+              if (!isReciterOpen) setReciterSearch("");
+              setIsReciterOpen(!isReciterOpen);
+            }}
+            className={`w-full flex items-center justify-between bg-[#1a1a1e] border ${isReciterOpen ? "border-studio-accent ring-1 ring-studio-accent/20" : "border-white/5 hover:border-white/10"} rounded-xl px-4 py-3 transition-all group text-left`}
+          >
+            <span className="flex items-center gap-3 min-w-0">
+              <span
+                className={`w-8 h-8 shrink-0 rounded-full flex items-center justify-center transition-colors ${config.audioSource === "reciter" ? "bg-studio-accent/20 text-studio-accent" : "bg-black/20 text-zinc-500"}`}
               >
-                {config.reciterId === r.id ? (
-                  <Mic2 className="w-4 h-4 animate-pulse" />
+                <Mic className="w-4 h-4" />
+              </span>
+              <span className="block truncate text-sm font-bold text-white group-hover:text-studio-accent transition-colors">
+                {selectedReciter.name}
+              </span>
+            </span>
+            <ChevronDown
+              className={`w-4 h-4 shrink-0 ml-3 text-zinc-500 transition-transform duration-300 ${isReciterOpen ? "rotate-180 text-studio-accent" : ""}`}
+            />
+          </button>
+
+          {isReciterOpen && (
+            <div className="absolute top-full left-0 right-0 mt-2 bg-[#18181b] border border-[#27272a] rounded-xl shadow-2xl overflow-hidden flex flex-col animate-in fade-in slide-in-from-top-2 duration-200 z-[100]">
+              <div className="p-3 border-b border-[#27272a] sticky top-0 bg-[#18181b]/95 backdrop-blur-sm z-10">
+                <input
+                  type="text"
+                  placeholder="Search reciter..."
+                  autoFocus
+                  value={reciterSearch}
+                  onChange={(e) => setReciterSearch(e.target.value)}
+                  className="w-full bg-[#27272a] border border-transparent focus:border-studio-accent/50 rounded-lg px-3 py-2 text-sm text-white focus:ring-2 focus:ring-studio-accent/20 outline-none placeholder:text-zinc-600 transition-all"
+                />
+              </div>
+              <div className="overflow-y-auto custom-scrollbar max-h-[240px] p-1">
+                {filteredReciters.length > 0 ? (
+                  filteredReciters.map((r) => (
+                    <button
+                      key={r.id}
+                      onClick={() => {
+                        setConfig({
+                          ...config,
+                          reciterId: r.id,
+                          audioSource: "reciter",
+                        });
+                        setIsReciterOpen(false);
+                      }}
+                      className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg mb-0.5 transition-all text-left ${r.id === selectedReciter.id ? "bg-studio-accent text-white shadow-md" : "hover:bg-white/5 text-zinc-400 hover:text-white"}`}
+                    >
+                      <span
+                        className={`w-8 h-8 shrink-0 rounded-full flex items-center justify-center transition-colors ${r.id === selectedReciter.id ? "bg-white/20" : "bg-black/20"}`}
+                      >
+                        {r.id === selectedReciter.id ? (
+                          <Mic2 className="w-4 h-4" />
+                        ) : (
+                          <Mic className="w-4 h-4" />
+                        )}
+                      </span>
+                      <span className="flex-1 min-w-0 text-sm font-medium truncate leading-tight">
+                        {r.name}
+                      </span>
+                      {r.id === selectedReciter.id && (
+                        <Check className="w-3.5 h-3.5 shrink-0" />
+                      )}
+                    </button>
+                  ))
                 ) : (
-                  <Mic className="w-4 h-4" />
+                  <div className="p-3 text-center text-xs text-zinc-600">
+                    No match
+                  </div>
                 )}
               </div>
-              <div className="flex flex-col min-w-0">
-                <span className="text-sm font-medium truncate leading-tight">
-                  {r.name}
-                </span>
-              </div>
-            </button>
-          ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Selected audio summary — same card style as Selected Translation */}
+      <div className="flex items-center gap-3 bg-[#1a1a1e] border border-white/5 rounded-xl px-4 py-3">
+        {config.audioSource === "custom" ? (
+          <FileAudio className="w-4 h-4 shrink-0 text-studio-accent" />
+        ) : (
+          <Mic2 className="w-4 h-4 shrink-0 text-studio-accent" />
+        )}
+        <div className="min-w-0">
+          <p className="text-[10px] uppercase font-bold text-zinc-500 tracking-wider">
+            {config.audioSource === "custom"
+              ? "Custom Audio"
+              : "Selected Reciter"}
+          </p>
+          <p className="truncate text-sm font-bold text-white">
+            {config.audioSource === "custom"
+              ? config.customAudioName || "No custom audio selected"
+              : selectedReciter.name}
+          </p>
         </div>
       </div>
 
