@@ -118,7 +118,7 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
           tagName: ${{ github.ref_name }}
-          releaseName: "Quran Studio ${{ github.ref_name }}"
+          releaseName: "Quran Video Maker ${{ github.ref_name }}"
           releaseBody: "Downloads neeche hain — apne OS ke hisaab se sahi file le lo."
           releaseDraft: true
           prerelease: false
