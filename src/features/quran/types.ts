@@ -1,5 +1,6 @@
 export interface Word {
-  text_uthmani: string;
+  text_uthmani?: string;
+  text_indopak?: string;
   char_type_name: string;
   code_v1?: string;
   code_v2?: string;

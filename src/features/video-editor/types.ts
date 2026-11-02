@@ -30,6 +30,9 @@ export interface VideoConfig {
   // is the matching `language=` ISO code for that translation.
   translationLanguage: string;
   translationId: number;
+  // Quran text script (Quran.com API v4 field): "uthmani" → text_uthmani,
+  // "indopak" → text_indopak. See features/quran/data/textScripts.ts.
+  quranTextScript: "uthmani" | "indopak";
   showTranslation: boolean;
   translationColor: string;
   translationHighlightColor: string; // New: Highlight color for translation

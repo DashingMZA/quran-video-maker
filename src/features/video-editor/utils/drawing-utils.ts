@@ -61,7 +61,17 @@ export const getFontType = (config: VideoConfig) => {
   return selectedFont?.type || "v2";
 };
 
-export const getWordDisplay = (word: any, fontType: string) => {
+export const getWordDisplay = (
+  word: any,
+  fontType: string,
+  quranTextScript: VideoConfig["quranTextScript"] = "uthmani",
+) => {
+  // IndoPak must bypass the QPC code glyphs (code_v1/code_v2 are Uthmani
+  // QPC glyphs) — otherwise selecting IndoPak would change nothing
+  // visually. Render the IndoPak Unicode text instead.
+  if (quranTextScript === "indopak") {
+    return word.text_indopak ?? word.text_uthmani ?? "";
+  }
   let displayWord = word.text_uthmani;
   if (fontType === "v1" && word.code_v1) displayWord = word.code_v1;
   else if (fontType === "qadr" && word.code_v1) displayWord = word.code_v1;
@@ -75,6 +85,12 @@ export const getWordFont = (
   fontType: string,
   config: VideoConfig,
 ) => {
+  // IndoPak Unicode text cannot be drawn with the QPC page fonts (they
+  // only contain QPC glyphs). Use a system Arabic font stack instead;
+  // no IndoPak font is bundled with the app.
+  if (config.quranTextScript === "indopak") {
+    return `normal ${config.fontSize}px "Amiri", "Traditional Arabic", "Noto Naskh Arabic", serif`;
+  }
   if (fontType === "qadr")
     return `normal ${config.fontSize}px "${AL_QADR_FONT.family}"`;
   if (word.page_number)

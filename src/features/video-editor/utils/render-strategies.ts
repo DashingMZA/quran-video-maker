@@ -55,7 +55,7 @@ export const renderStreamMode = ({
   const streamCenterY = canvas.height * (config.quranTextY / 100);
   const globalWordSpacing = config.wordSpacing;
   const wordSpacing = config.fontSize * 0.5 + globalWordSpacing;
-  const configSig = `${config.surahId}-${config.verseStart}-${config.fontFamily}-${config.fontSize}-${config.wordSpacing}-${verses.length}`;
+  const configSig = `${config.surahId}-${config.verseStart}-${config.fontFamily}-${config.fontSize}-${config.wordSpacing}-${config.quranTextScript}-${verses.length}`;
 
   if (
     !streamLayoutRef.current ||
@@ -71,7 +71,7 @@ export const renderStreamMode = ({
         const parts: StreamPart[] = [];
         let totalWidth = 0;
 
-        const displayWord = getWordDisplay(word, fontType);
+        const displayWord = getWordDisplay(word, fontType, config.quranTextScript);
         const fontStr = getWordFont(word, fontType, config);
 
         ctx.font = fontStr;
@@ -86,7 +86,7 @@ export const renderStreamMode = ({
 
         const nextWord = verse.words[i + 1];
         if (nextWord && nextWord.char_type_name === "end") {
-          const markerDisplay = getWordDisplay(nextWord, fontType);
+          const markerDisplay = getWordDisplay(nextWord, fontType, config.quranTextScript);
           const markerFont = getWordFont(nextWord, fontType, config);
 
           ctx.font = markerFont;
@@ -347,7 +347,7 @@ export const renderSingleMode = ({
   ctx.direction = "rtl";
 
   const measuredWords = chunkToRender.map((word) => {
-    const displayWord = getWordDisplay(word, fontType);
+    const displayWord = getWordDisplay(word, fontType, config.quranTextScript);
     const fontStr = getWordFont(word, fontType, config);
     ctx.font = fontStr;
     return {
@@ -461,7 +461,7 @@ export const renderPageMode = ({
 
   for (let i = 0; i < currentVerseWords.length; i++) {
     const word = currentVerseWords[i];
-    const displayWord = getWordDisplay(word, fontType);
+    const displayWord = getWordDisplay(word, fontType, config.quranTextScript);
     const fontStr = getWordFont(word, fontType, config);
 
     ctx.font = fontStr;

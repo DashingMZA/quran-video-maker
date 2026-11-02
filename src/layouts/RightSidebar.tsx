@@ -1,6 +1,7 @@
 import React from "react";
 import { VideoConfig } from "../features/video-editor/types";
 import SidebarLayout from "./sidebar/SidebarLayout";
+import SidebarQuranScript from "./sidebar/SidebarQuranScript";
 import SidebarTypography from "./sidebar/SidebarTypography";
 import SidebarStyle from "./sidebar/SidebarStyle";
 
@@ -32,6 +33,8 @@ export default function RightSidebar({
       {/* Scrollable Content */}
       <div className="flex-1 overflow-y-auto custom-scrollbar p-5 space-y-8">
         <SidebarLayout config={config} setConfig={setConfig} />
+
+        <SidebarQuranScript config={config} setConfig={setConfig} />
 
         <SidebarTypography
           config={config}

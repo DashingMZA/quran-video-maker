@@ -80,6 +80,7 @@ export default function App() {
     // resources list and returns no verse translations.
     translationLanguage: "ur",
     translationId: 234,
+    quranTextScript: "uthmani",
     showTranslation: true,
     translationColor: "#a1a1aa",
     translationHighlightColor: "#ffffff", // Default Highlight White
