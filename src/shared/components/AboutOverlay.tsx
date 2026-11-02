@@ -126,7 +126,7 @@ export default function AboutOverlay({ isOpen, onClose }: AboutOverlayProps) {
                 {appInfo.description}
               </p>
               <p className="text-zinc-500 text-[11px] leading-relaxed">
-                Quran text, audio from{" "}
+                Quran text & audio from{" "}
                 <a
                   href="https://quran.com"
                   target="_blank"
@@ -278,7 +278,7 @@ export default function AboutOverlay({ isOpen, onClose }: AboutOverlayProps) {
             <div className="p-4 rounded-lg bg-white/[0.04] border border-white/10 w-full text-xs text-zinc-400">
               Theme: Dark
               <br />
-              Language: English / Urdu
+              Language: Arabic / English / Urdu
             </div>
           </div>
         );
