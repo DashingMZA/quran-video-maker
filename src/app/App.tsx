@@ -59,14 +59,21 @@ export default function App() {
     customAudioName: null,
     customAudioDurationMs: null,
     customVerseTimings: {},
+    // Best default styling (2026-11-02): clean, export-ready look.
+    // Solid deep-green background instead of a random Pixabay image, so
+    // the ayah is always crisp and readable with nothing busy behind it.
+    // Quran text pure white, header/bismillah/ayah-end in soft gold,
+    // translation in bright light-grey with Normal (non-animated) mode,
+    // so the user can export straight from this default.
     fontFamily: "v2", // Default KFC V2
     fontSize: 86, // Default 86px for V2
     wordSpacing: 4, // Default Word Spacing 4px
-    textColor: "#e7e9ea", // Default Dark Text
-    backgroundColor: "#1f2125", // Default Dark BG
+    textColor: "#ffffff", // Pure white ayah text for max clarity
+    backgroundColor: "#0b1d17", // Deep midnight green, solid
 
-    // Background Image Defaults
-    backgroundType: "image",
+    // Background Image Defaults (kept for when the user picks Image/Video;
+    // the default itself is solid colour, so no random image is applied)
+    backgroundType: "color",
     backgroundImage: null,
     backgroundVideo: null,
     backgroundVideoPoster: null,
@@ -82,26 +89,26 @@ export default function App() {
     translationId: 20,
     quranTextScript: "uthmani",
     showTranslation: true,
-    translationColor: "#a1a1aa",
+    translationColor: "#e5e7eb", // Bright, clearly readable translation
     translationHighlightColor: "#ffffff", // Default Highlight White
-    translationHighlightMode: "karaoke", // Default Karaoke Mode
+    translationHighlightMode: "none", // Normal mode (no karaoke dimming)
     translationFontFamily: "Lato",
-    translationFontSize: 30,
+    translationFontSize: 34, // Larger than before, for clear subtitles
     enableHighlight: true,
-    highlightColor: "#facc15", // Default Accent
+    highlightColor: "#facc15", // Default Accent (active Quran word)
     showSurahHeader: true,
-    surahHeaderColor: "#e7e9ea", // Default Header Color
+    surahHeaderColor: "#e6c87a", // Soft gold header
     surahHeaderSize: 16, // Default 16% width
     surahHeaderY: 12, // Default 12% vertical position
     showBismillah: true,
-    bismillahColor: "#e7e9ea", // Default Bismillah Color
+    bismillahColor: "#e6c87a", // Soft gold Bismillah, matches header
     bismillahSize: 50, // Default 50% width
     bismillahY: 22, // Default 22% vertical position
     quranTextY: 52, // Default 52% (V2 Default)
     translationY: 85, // Default 85% (Bottom)
     fontPalette: "--Dark", // Default Palette
     visualizationMode: "page_v2", // Default to Single Mode
-    verseNumberColor: "#ffffff", // Default Verse Number Color (White)
+    verseNumberColor: "#e6c87a", // Soft gold ayah-end marker
   });
 
   const [typoTab, setTypoTab] = useState<"quran" | "translation">("quran");
