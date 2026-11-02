@@ -96,7 +96,7 @@ src/
 src-tauri/
   tauri.conf.json             Product/bundle metadata, updater, sidecars
   src/main.rs                 get_app_export_path command
-                              (Download/Documents → Quran_Video_Studio folder)
+                              (Download/Documents → Quran_Video_Maker folder)
   capabilities/default.json   Tauri capability grants
   binaries/                   ffmpeg/ffprobe sidecars (gitignored, build-time)
   icons/                      App icons (icns/ico/png)

@@ -48,7 +48,7 @@ export default function AboutOverlay({ isOpen, onClose }: AboutOverlayProps) {
       // Default to Downloads if not set
       getAppDefaultPath("Download").then((path) => {
         if (path) {
-          // Path already includes 'Quran_Video_Studio' from Rust backend
+          // Path already includes 'Quran_Video_Maker' from Rust backend
           setExportPath(path);
           localStorage.setItem("exportPath", path);
         }
@@ -67,7 +67,7 @@ export default function AboutOverlay({ isOpen, onClose }: AboutOverlayProps) {
   const handleSetDefault = async (base: "Download" | "Documents") => {
     const path = await getAppDefaultPath(base);
     if (path) {
-      // Path already includes 'Quran_Video_Studio' from Rust backend
+      // Path already includes 'Quran_Video_Maker' from Rust backend
       setExportPath(path);
       localStorage.setItem("exportPath", path);
     }
@@ -225,7 +225,7 @@ export default function AboutOverlay({ isOpen, onClose }: AboutOverlayProps) {
                 </button>
 
                 <p className="text-[10px] text-zinc-600">
-                  Videos will be saved to a 'Quran_Video_Studio' folder in this
+                  Videos will be saved to a 'Quran_Video_Maker' folder in this
                   location.
                 </p>
               </div>
