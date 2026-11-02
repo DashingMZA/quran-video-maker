@@ -126,14 +126,14 @@ export default function AboutOverlay({ isOpen, onClose }: AboutOverlayProps) {
                 {appInfo.description}
               </p>
               <p className="text-zinc-500 text-[11px] leading-relaxed">
-                Quran fonts provided by{" "}
+                Quran text, audio from{" "}
                 <a
-                  href="https://quran.foundation"
+                  href="https://quran.com"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-zinc-300 hover:text-white transition-colors"
                 >
-                  Quran Foundation
+                  Quran.com
                 </a>
               </p>
             </div>
