@@ -64,7 +64,36 @@ export const ENGLISH_FONTS: QuranFont[] = [
   { name: "montserrat", family: "Montserrat", label: "Montserrat", type: "v1" },
   { name: "poppins", family: "Poppins", label: "Poppins", type: "v1" },
   { name: "lato", family: "Lato", label: "Lato", type: "v1" },
+  { name: "open-sans", family: "Open Sans", label: "Open Sans", type: "v1" },
+  { name: "nunito", family: "Nunito", label: "Nunito", type: "v1" },
+  { name: "manrope", family: "Manrope", label: "Manrope", type: "v1" },
+  { name: "oswald", family: "Oswald", label: "Oswald", type: "v1" },
 ];
+
+/**
+ * Bundled subtitle font files (Google Fonts, SIL OFL 1.1, Latin subset)
+ * in public/fonts/subtitles/. Variable fonts ship as a single file with
+ * a weight range; static fonts ship as separate 400/700 files. The
+ * canvas draws subtitles in bold (700), so both cases must be loadable
+ * — previously NONE of these fonts were bundled, imported, or loaded,
+ * so the canvas silently fell back to the system sans-serif on any
+ * machine without the font installed.
+ */
+export const SUBTITLE_FONT_FILES: Record<
+  string,
+  { variable?: { file: string; weight: string }; regular?: string; bold?: string }
+> = {
+  Figtree: { variable: { file: "figtree.woff2", weight: "300 900" } },
+  Inter: { variable: { file: "inter.woff2", weight: "100 900" } },
+  Roboto: { variable: { file: "roboto.woff2", weight: "100 900" } },
+  Montserrat: { variable: { file: "montserrat.woff2", weight: "100 900" } },
+  Poppins: { regular: "poppins-400.woff2", bold: "poppins-700.woff2" },
+  Lato: { regular: "lato-400.woff2", bold: "lato-700.woff2" },
+  "Open Sans": { variable: { file: "open-sans.woff2", weight: "300 800" } },
+  Nunito: { variable: { file: "nunito.woff2", weight: "200 1000" } },
+  Manrope: { variable: { file: "manrope.woff2", weight: "200 800" } },
+  Oswald: { variable: { file: "oswald.woff2", weight: "400 700" } },
+};
 
 export const CANVAS_SIZES = {
   "9:16": { width: 1080, height: 1920 },

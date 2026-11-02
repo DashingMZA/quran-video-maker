@@ -1,11 +1,75 @@
 import { useRef, useEffect, useState } from "react";
 import { VideoConfig } from "../types";
 import { VerseData } from "../../quran/types";
-import { FONTS, FONT_BASE_URLS, AL_QADR_FONT } from "../../../shared/constants";
+import {
+  FONTS,
+  FONT_BASE_URLS,
+  AL_QADR_FONT,
+  SUBTITLE_FONT_FILES,
+} from "../../../shared/constants";
 
 export const useFontLoader = (config: VideoConfig, verses: VerseData[]) => {
   const [fontsLoaded, setFontsLoaded] = useState(false);
+  const [subtitleFontLoaded, setSubtitleFontLoaded] = useState(false);
   const loadedFontsCache = useRef<Set<string>>(new Set());
+
+  // Load the selected subtitle font (bold is what the canvas draws).
+  // Previously no subtitle font was loaded at all, so the canvas fell
+  // back to the system font unless the user happened to have it.
+  useEffect(() => {
+    let cancelled = false;
+    const loadSubtitleFont = async () => {
+      const files = SUBTITLE_FONT_FILES[config.translationFontFamily];
+      if (!files) {
+        setSubtitleFontLoaded(true);
+        return;
+      }
+      try {
+        const faces: FontFace[] = [];
+        if (files.variable) {
+          const key = `sub-${config.translationFontFamily}-var`;
+          if (!loadedFontsCache.current.has(key)) {
+            faces.push(
+              new FontFace(
+                config.translationFontFamily,
+                `url("/fonts/subtitles/${files.variable.file}")`,
+                { weight: files.variable.weight },
+              ),
+            );
+            loadedFontsCache.current.add(key);
+          }
+        } else {
+          for (const [weight, file] of [
+            ["400", files.regular],
+            ["700", files.bold],
+          ] as const) {
+            if (!file) continue;
+            const key = `sub-${config.translationFontFamily}-${weight}`;
+            if (loadedFontsCache.current.has(key)) continue;
+            faces.push(
+              new FontFace(
+                config.translationFontFamily,
+                `url("/fonts/subtitles/${file}")`,
+                { weight },
+              ),
+            );
+            loadedFontsCache.current.add(key);
+          }
+        }
+        await Promise.all(
+          faces.map((f) => f.load().then((loaded) => document.fonts.add(loaded))),
+        );
+      } catch (e) {
+        console.error("Failed to load subtitle font", e);
+      }
+      if (!cancelled) setSubtitleFontLoaded(true);
+    };
+    setSubtitleFontLoaded(false);
+    void loadSubtitleFont();
+    return () => {
+      cancelled = true;
+    };
+  }, [config.translationFontFamily]);
 
   // Load Header Font (SurahNames)
   useEffect(() => {
@@ -179,5 +243,5 @@ export const useFontLoader = (config: VideoConfig, verses: VerseData[]) => {
     config.textColor,
   ]);
 
-  return { fontsLoaded };
+  return { fontsLoaded: fontsLoaded && subtitleFontLoaded };
 };

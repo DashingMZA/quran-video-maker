@@ -40,6 +40,96 @@
     font-display: swap;
   }
 
+  /* Bundled subtitle fonts (Google Fonts, SIL OFL 1.1, Latin subset)
+   * in public/fonts/subtitles/. Variable fonts use a weight range so
+   * the canvas bold (700) instantiates correctly; static fonts need
+   * separate 400/700 faces. Also loaded explicitly via FontFace in
+   * useFontLoader so the canvas waits for the selected font. */
+  @font-face {
+    font-family: "Figtree";
+    src: url("/fonts/subtitles/figtree.woff2") format("woff2");
+    font-weight: 300 900;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Inter";
+    src: url("/fonts/subtitles/inter.woff2") format("woff2");
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Roboto";
+    src: url("/fonts/subtitles/roboto.woff2") format("woff2");
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Montserrat";
+    src: url("/fonts/subtitles/montserrat.woff2") format("woff2");
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Poppins";
+    src: url("/fonts/subtitles/poppins-400.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Poppins";
+    src: url("/fonts/subtitles/poppins-700.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Lato";
+    src: url("/fonts/subtitles/lato-400.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Lato";
+    src: url("/fonts/subtitles/lato-700.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Open Sans";
+    src: url("/fonts/subtitles/open-sans.woff2") format("woff2");
+    font-weight: 300 800;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Nunito";
+    src: url("/fonts/subtitles/nunito.woff2") format("woff2");
+    font-weight: 200 1000;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Manrope";
+    src: url("/fonts/subtitles/manrope.woff2") format("woff2");
+    font-weight: 200 800;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Oswald";
+    src: url("/fonts/subtitles/oswald.woff2") format("woff2");
+    font-weight: 400 700;
+    font-style: normal;
+    font-display: swap;
+  }
+
   /* Bundled IndoPak font (Quran Foundation's indopak-nastaleeq-waqf-lazim
    * v4.2.1, served from verses.quran.foundation). Used for the IndoPak
    * text script (text_indopak) — the QPC page fonts only contain Uthmani
