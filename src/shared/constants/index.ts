@@ -16,8 +16,6 @@ export const RECITERS: Reciter[] = [
   { id: 9, name: "Mohamed Siddiq al-Minshawi" },
   { id: 13, name: "Sa'ad al-Ghamdi" },
   { id: 10, name: "Sa'ud ash-Shuraim" },
-  { id: 176, name: "Ahmed Abdelhamid Tahoun" },
-  { id: 175, name: "Abdullah Hamad Abu Sharida" },
   { id: 12, name: "Mahmoud Khalil Al-Husary (Muallim)" },
   { id: 173, name: "Mishari Rashid al-`Afasy" },
   { id: 168, name: "Mohamed Siddiq al-Minshawi (Kids repeat)" },
