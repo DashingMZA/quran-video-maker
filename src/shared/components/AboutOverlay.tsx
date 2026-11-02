@@ -96,13 +96,17 @@ export default function AboutOverlay({ isOpen, onClose }: AboutOverlayProps) {
         return (
           <div className="flex flex-col items-center text-center space-y-6 animate-in fade-in duration-200">
             <div className="mt-2">
-              <div className="w-20 h-20 bg-white/[0.04] rounded-2xl flex items-center justify-center border border-white/10">
-                <img
-                  src="/icon/favicon.svg"
-                  alt="Logo"
-                  className="w-12 h-12 opacity-90 invert brightness-0"
-                />
-              </div>
+              {/* Do NOT apply invert/brightness filters here: the app icon
+               * is a colourful image (dark-green rounded square, gold star,
+               * white Quran/play mark). `invert brightness-0` flattened
+               * every colour to white, so the logo showed up as a solid
+               * white square. Use the PNG icon as-is. */}
+              <img
+                src="/icon/web-app-manifest-512x512.png"
+                alt="Quran Video Maker logo"
+                className="w-20 h-20 rounded-2xl shadow-lg"
+                draggable={false}
+              />
             </div>
 
             <div className="space-y-3 w-full max-w-sm">
@@ -120,6 +124,17 @@ export default function AboutOverlay({ isOpen, onClose }: AboutOverlayProps) {
               </div>
               <p className="text-zinc-400 text-sm leading-relaxed">
                 {appInfo.description}
+              </p>
+              <p className="text-zinc-500 text-[11px] leading-relaxed">
+                Quran fonts provided by{" "}
+                <a
+                  href="https://quran.foundation"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-zinc-300 hover:text-white transition-colors"
+                >
+                  Quran Foundation
+                </a>
               </p>
             </div>
 
